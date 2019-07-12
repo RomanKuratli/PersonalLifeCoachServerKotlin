@@ -64,7 +64,7 @@ class PLC_ServerKotlin {
                 Spark.staticFiles.location("/resources")
 
                 // CORS
-                /*Spark.options("/*") { req, res -> {
+                Spark.options("/*") { req, res ->
                     val accessControlRequestHeaders = req.headers("Access-Control-Request-Headers")
                     if (accessControlRequestHeaders != null) {
                         res.header("Access-Control-Allow-Headers", accessControlRequestHeaders)
@@ -74,12 +74,6 @@ class PLC_ServerKotlin {
                     if (accessControlRequestMethod != null) {
                         res.header("Access-Control-Allow-Methods", accessControlRequestMethod)
                     }
-                }}*/
-                 */
-                Spark.options("/*") { _, res ->
-                    res.header("Access-Control-Allow-Headers", "*")
-                    res.header("Access-Control-Allow-Methods", "GET POST DELETE")
-                    res.header("Access-Control-Allow-Origin", /*"http://localhost:4200"*/ "*")
                 }
 
                 Spark.before("/rest/*") { // not for /rest itself which returns html
