@@ -82,7 +82,10 @@ class PLC_ServerKotlin {
                     res.type("application/json")
                 }
 
-                Spark.exception(Exception::class.java) { exception, _, _ -> LOGGER.severe("Exception handling request:$exception") }
+                Spark.exception(Exception::class.java) { exception, _, _ ->
+                    LOGGER.severe("Exception handling request:$exception")
+                    exception.printStackTrace()
+                }
 
                 // setup Resources AFTER connecting to MongoDB
                 setupRootResource()

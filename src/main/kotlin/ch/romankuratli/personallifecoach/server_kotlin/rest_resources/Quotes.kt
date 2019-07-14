@@ -33,7 +33,7 @@ class Quotes: RESTResource {
 
     override fun handlePost(): Route {
         return Route{req, _ ->
-            val doc = Utils.getBodyJsonDoc(req)
+            val doc = Utils.getBodyJsonDoc(req, arrayOf("author", "quote", "source", "lang"))
             // add the index value 'quote hash'
             doc["quote_hash"] = doc["quote"].hashCode()
             QUOTES_COLL.insertOne(doc)

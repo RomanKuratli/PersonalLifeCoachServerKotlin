@@ -1,23 +1,14 @@
 package ch.romankuratli.personallifecoach.server_kotlin.rest_resources
 
 import spark.Route
-import java.util.logging.Logger
 import java.lang.StringBuilder
 
 
 class RootResource : RESTResource {
 
     var availableRoutes: List<String> = arrayListOf()
-
-    override val subResources: Array<RESTResource>
-        get() = arrayOf(Quotes())
-
-    companion object {
-        private val LOGGER = Logger.getLogger(RootResource::class.java!!.name)
-    }
-
-    override val subPath: String
-        get() = "/rest"
+    override val subPath get() = "/rest"
+    override val subResources get() = arrayOf(Quotes(), Diary())
 
     private fun getAvailableRoutesHTML(): String {
         val sb = StringBuilder()
