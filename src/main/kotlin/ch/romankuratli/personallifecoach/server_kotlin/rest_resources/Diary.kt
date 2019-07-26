@@ -1,6 +1,7 @@
 package ch.romankuratli.personallifecoach.server_kotlin.rest_resources
 
 import ch.romankuratli.personallifecoach.server_kotlin.MongoDBConnector
+import ch.romankuratli.personallifecoach.server_kotlin.utils.DiaryPictureManager
 import ch.romankuratli.personallifecoach.server_kotlin.utils.Utils
 import org.bson.Document
 import spark.Route
@@ -9,26 +10,30 @@ import kotlin.collections.ArrayList
 
 val DIARY_COLL = MongoDBConnector.getCollection("diary")
 
-fun Date.toMyDateString(): String = "${year + 1900}-${month + 1}-$date"
+fun Date.toMyDateString(): String = "${year + 1900}_${month + 1}_$date"
 
 fun String.myDateStringToDate(): Date {
-    val (year, month, date) = split("-").map { toInt() }
+    val (year, month, date) = split("_").map { toInt() }
     val c = Calendar.getInstance()
     c.set(year, month, date)
     return c.time
 }
 
-fun Document.toDiaryJson(): String = """
+fun Document.toDiaryJson(): String  {
+    val d: Date = getDate("entry_date")
+
+    return """
 {
     "_id": "${get("_id").toString()}",
-    "entryDate": "${getDate("entry_date").toMyDateString()}",
+    "entryDate": "${d.toMyDateString()}",
     "entries": ${
-                    get("entries", ArrayList<String>()).joinToString(prefix = "[", postfix = "],") 
-                    { "\"${it.replace('"', "'"[0])}\""}
-                }
-    "pictureUrls": []
+    get("entries", ArrayList<String>()).joinToString(prefix = "[", postfix = "],")
+    { "\"${it.replace('"', "'"[0])}\"" }
+    }
+    "pictureUrls": ${DiaryPictureManager.getPicUrlsForEntry(d).joinToString(prefix = "[", postfix = "]")}
 }
 """
+}
 
 class Diary: RESTResource {
     override val subPath get() = "/diary"

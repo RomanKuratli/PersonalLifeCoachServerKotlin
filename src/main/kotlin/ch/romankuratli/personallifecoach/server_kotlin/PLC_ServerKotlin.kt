@@ -2,6 +2,7 @@ package ch.romankuratli.personallifecoach.server_kotlin
 
 import ch.romankuratli.personallifecoach.server_kotlin.rest_resources.RESTResource
 import ch.romankuratli.personallifecoach.server_kotlin.rest_resources.RootResource
+import ch.romankuratli.personallifecoach.server_kotlin.utils.DiaryPictureManager
 import ch.romankuratli.personallifecoach.server_kotlin.utils.NotImplementedRoute
 import java.util.logging.Logger
 import spark.*
@@ -62,6 +63,7 @@ class PLC_ServerKotlin {
 
                 // specify static folder on server
                 Spark.staticFiles.location("/resources")
+                DiaryPictureManager.init()
 
                 // CORS
                 Spark.options("/*") { req, res ->
