@@ -86,12 +86,15 @@ object DiaryPictureManager {
         return true
     }
 
-    fun getPicUrlsForEntry(d: Date): List<String> {
-        val ret = mutableListOf<String>()
-        val dateStr = d.toMyDateString()
-        for (s in getFileNames()) {
-            if (s.startsWith(dateStr) && isFileAllowed(s)) ret.add(s)
+    private fun isFromSameDate(dateStr: String, fileName: String): Boolean {
+        if (!isFileAllowed(fileName)) {
+            LOGGER.severe("file $fileName is not allowed!")
+            return false
         }
-        return ret
+        val (year, month, day) = dateStr.split("_").map { it.toInt() }
+        val (fYear, fMonth, fDay) = fileName.split(".")[0].split("_").map { it.toInt() }
+        return year === fYear && month === fMonth && day === fDay
     }
+
+    fun getPicUrlsForEntry(d: Date): List<String> = getFileNames().filter { isFromSameDate(d.toMyDateString(), it)}
 }

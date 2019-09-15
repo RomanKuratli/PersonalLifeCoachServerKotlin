@@ -62,7 +62,8 @@ class PLC_ServerKotlin {
                 MongoDBConnector.connect()
 
                 // specify static folder on server
-                Spark.staticFiles.location("/resources")
+                //Spark.staticFiles.location("/resources/diary/pictures")
+                Spark.staticFiles.externalLocation("D:\\GithubProjects\\PersonalLifeCoachServerKotlin\\resources\\diary\\pictures")
                 DiaryPictureManager.init()
 
                 // CORS

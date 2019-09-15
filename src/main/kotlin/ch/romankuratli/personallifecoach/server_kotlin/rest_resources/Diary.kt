@@ -8,7 +8,7 @@ import spark.Route
 import java.util.*
 import kotlin.collections.ArrayList
 
-val DIARY_COLL = MongoDBConnector.getCollection("diary")
+private val DIARY_COLL = MongoDBConnector.getCollection("diary")
 
 fun Date.toMyDateString(): String = "${year + 1900}_${month + 1}_$date"
 
@@ -30,7 +30,7 @@ fun Document.toDiaryJson(): String  {
     get("entries", ArrayList<String>()).joinToString(prefix = "[", postfix = "],")
     { "\"${it.replace('"', "'"[0])}\"" }
     }
-    "pictureUrls": ${DiaryPictureManager.getPicUrlsForEntry(d).joinToString(prefix = "[", postfix = "]")}
+    "pictureUrls": ${DiaryPictureManager.getPicUrlsForEntry(d).joinToString(prefix = "[", postfix = "]") {"\"$it\""}}
 }
 """
 }
