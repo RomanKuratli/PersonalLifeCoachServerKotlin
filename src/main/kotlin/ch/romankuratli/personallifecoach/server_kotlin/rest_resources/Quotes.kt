@@ -59,7 +59,7 @@ class QuoteById: RESTResource {
     override fun handleDelete(): Route {
         return Route{req, _ ->
             QUOTES_COLL.deleteOne(eq<ObjectId>("_id", ObjectId(req.params("id"))))
-            """{"msg": "ok"}"""
+            """{"msg": "Quote succesfully deleted !"}"""
         }
     }
 }

@@ -13,9 +13,9 @@ private val DIARY_COLL = MongoDBConnector.getCollection("diary")
 fun Date.toMyDateString(): String = "${year + 1900}_${month + 1}_$date"
 
 fun String.myDateStringToDate(): Date {
-    val (year, month, date) = split("_").map { toInt() }
+    val (year, month, date) = split("-").map { it.toInt() }
     val c = Calendar.getInstance()
-    c.set(year, month, date)
+    c.set(year, month - 1, date)
     return c.time
 }
 
@@ -40,8 +40,32 @@ class Diary: RESTResource {
     override val subResources: Array<RESTResource> get() = arrayOf(GoodDay())
 
     override fun handleGet(): Route {
-        return Route {_, _ ->
-            DIARY_COLL.find().joinToString(prefix = "[", postfix = "]") { it.toDiaryJson()}
+        return Route {req, _ ->
+            var entries = DIARY_COLL.find()
+            val queryDate = req.queryParams("entryDate")
+            var ret: String? = null
+            if (queryDate != null) {
+                val (year, month, day) = queryDate.split("-").map { it.toInt() }
+                for (entry in entries) {
+                    val entryDate = entry.getDate("entry_date")
+                    if (year == entryDate.year + 1900 && month == entryDate.month + 1 && day == entryDate.date) {
+                        ret = """
+{
+    "found": "true", 
+    "entry": ${entry.toDiaryJson()}
+}
+""".trimIndent()
+                    }
+                }
+                if (ret == null) {
+                    ret = """{"found":"false"}"""
+                }
+            }
+
+            // return all entries
+
+            if (ret == null)  entries.joinToString(prefix = "[", postfix = "]") { it.toDiaryJson()}
+            else ret
         }
     }
 

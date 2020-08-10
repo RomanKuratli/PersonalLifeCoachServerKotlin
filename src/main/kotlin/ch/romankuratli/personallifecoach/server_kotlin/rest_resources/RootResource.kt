@@ -8,7 +8,7 @@ class RootResource : RESTResource {
 
     var availableRoutes: List<String> = arrayListOf()
     override val subPath get() = "/rest"
-    override val subResources get() = arrayOf(Quotes(), Diary())
+    override val subResources get() = arrayOf(Quotes(), Diary(), Config(), Activities())
 
     private fun getAvailableRoutesHTML(): String {
         val sb = StringBuilder()

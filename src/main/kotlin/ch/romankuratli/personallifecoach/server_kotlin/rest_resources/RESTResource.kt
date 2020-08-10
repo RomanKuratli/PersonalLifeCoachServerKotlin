@@ -14,6 +14,10 @@ interface RESTResource {
         return NotImplementedRoute()
     }
 
+    fun handlePut(): Route {
+        return NotImplementedRoute()
+    }
+
     fun handlePost(): Route {
         return NotImplementedRoute()
     }

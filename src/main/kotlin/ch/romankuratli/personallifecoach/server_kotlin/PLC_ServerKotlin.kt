@@ -30,6 +30,12 @@ class PLC_ServerKotlin {
                 Spark.get(path, route)
             }
 
+            route = resource.handlePut()
+            if (route !is NotImplementedRoute) {
+                availableRoutes.add("PUT: $path")
+                Spark.put(path, route)
+            }
+
             route = resource.handlePost()
             if (route !is NotImplementedRoute) {
                 availableRoutes.add("POST: $path")
