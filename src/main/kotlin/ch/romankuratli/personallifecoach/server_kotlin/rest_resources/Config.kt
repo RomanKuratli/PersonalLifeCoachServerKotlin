@@ -43,11 +43,6 @@ fun Document.toConfigJson(): String {
 class Config: RESTResource {
     override val subPath: String get() = "/config"
     override val subResources: Array<RESTResource> get() = arrayOf(AvailableLocations(),CurrentLocation(), Birthday())
-    override fun handleGet(): Route {
-        return Route {_, _ ->
-
-        }
-    }
 }
 
 class AvailableLocations: RESTResource {

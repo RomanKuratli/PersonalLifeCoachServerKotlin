@@ -11,8 +11,6 @@ import java.lang.NullPointerException
 import java.util.logging.Logger
 
 object Utils {
-    private val LOGGER = Logger.getLogger(Utils::class.java.name)
-
     private fun _mapFromDocument(jsonObj: JSONObject, fields: Array<String>): MutableMap<String, Any> {
         val ret = HashMap<String, Any>()
         for (key in fields) {
